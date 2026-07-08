@@ -13,6 +13,12 @@
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
     <Version>0.1.0</Version>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <ApplicationIcon>upstairs.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- トレイアイコンとしても使うため埋め込みリソースにする -->
+    <EmbeddedResource Include="upstairs.ico" />
+  </ItemGroup>
 
 </Project>

@@ -112,39 +112,12 @@ internal sealed class TrayApplicationContext : ApplicationContext
         ExitThread();
     }
 
-    /// <summary>上向き矢印のトレイアイコンを実行時に生成する (外部リソース不要)。</summary>
+    /// <summary>埋め込みリソースの upstairs.ico からトレイ表示サイズのアイコンを読み込む。</summary>
     private static Icon CreateTrayIcon()
     {
-        using var bitmap = new Bitmap(32, 32);
-        using (var g = Graphics.FromImage(bitmap))
-        {
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            g.Clear(Color.Transparent);
-
-            using var brush = new SolidBrush(Color.FromArgb(0, 120, 215));
-            g.FillEllipse(brush, 1, 1, 30, 30);
-
-            // 上向き矢印
-            using var pen = new Pen(Color.White, 4)
-            {
-                StartCap = System.Drawing.Drawing2D.LineCap.Round,
-                EndCap = System.Drawing.Drawing2D.LineCap.Round,
-            };
-            g.DrawLine(pen, 16, 24, 16, 10);
-            g.DrawLine(pen, 16, 9, 9, 16);
-            g.DrawLine(pen, 16, 9, 23, 16);
-        }
-
-        IntPtr hIcon = bitmap.GetHicon();
-        try
-        {
-            // FromHandle はハンドルを所有しないため、Clone した複製を返して元ハンドルは破棄する
-            using var tempIcon = Icon.FromHandle(hIcon);
-            return (Icon)tempIcon.Clone();
-        }
-        finally
-        {
-            DestroyIcon(hIcon);
-        }
+        using var stream = typeof(TrayApplicationContext).Assembly
+            .GetManifestResourceStream("Upstairs.upstairs.ico")
+            ?? throw new InvalidOperationException("埋め込みリソース Upstairs.upstairs.ico が見つかりません。");
+        return new Icon(stream, SystemInformation.SmallIconSize);
     }
 }
