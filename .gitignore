@@ -1,0 +1,33 @@
+# ビルド出力 (publish 出力も bin/ 配下に含まれる)
+bin/
+obj/
+
+# Visual Studio / Rider / VS Code
+.vs/
+.idea/
+*.user
+*.suo
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+
+# テスト・カバレッジ結果
+TestResults/
+*.trx
+coverage*.json
+coverage*.xml
+
+# NuGet
+*.nupkg
+packages/
+
+# OS 生成物
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ログ・一時ファイル
+*.log
+*.tmp
