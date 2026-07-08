@@ -139,6 +139,13 @@ internal static class ExplorerNavigator
         {
             SetForegroundWindow(window);
             Thread.Sleep(50);
+
+            // SetForegroundWindow はフォアグラウンドロック等で失敗しうる。
+            // 対象以外のウィンドウに Alt+↑ を送らないよう、不一致なら中止する。
+            if (GetForegroundWindow() != window)
+            {
+                return;
+            }
         }
 
         var inputs = new INPUT[4];
