@@ -4,6 +4,12 @@ Windows エクスプローラーのファイル一覧の余白をダブルクリ
 
 要件の詳細は [REQUIREMENTS.md](REQUIREMENTS.md) を参照。
 
+## 動作環境
+
+- Windows 11 (Windows 10 でも動作する想定)
+- 対象は標準エクスプローラーのみ (デスクトップや他アプリの「ファイルを開く/保存」ダイアログでは動作しません)
+- 管理者権限不要。配布 exe は自己完結型のため .NET ランタイムのインストールも不要
+
 ## 使い方
 
 `Upstairs.exe` を起動すると、タスクトレイに青い上矢印アイコンが常駐します。
@@ -33,6 +39,10 @@ dotnet build -c Debug
 dotnet publish -c Release -r win-x64 --self-contained true `
   /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:EnableCompressionInSingleFile=true
 ```
+
+注意: Upstairs を起動したまま publish すると、exe が使用中のため上書きに失敗します
+(`The process cannot access the file ... because it is being used by another process`)。
+先にトレイメニューの「終了」でアプリを終了してから publish してください。
 
 ## 仕組み
 
