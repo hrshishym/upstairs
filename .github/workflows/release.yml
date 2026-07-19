@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Publish (self-contained single exe)
+        shell: pwsh
+        run: |
+          # タグ v1.2.3 -> バージョン 1.2.3 を抽出
+          $version = "${{ github.ref_name }}" -replace '^v', ''
+          Write-Host "Publishing version $version"
+          dotnet publish -c Release -r win-x64 --self-contained true `
+            /p:Version=$version `
+            /p:PublishSingleFile=true `
+            /p:IncludeNativeLibrariesForSelfExtract=true `
+            /p:EnableCompressionInSingleFile=true
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: bin/Release/net8.0-windows/win-x64/publish/Upstairs.exe
+          generate_release_notes: true
